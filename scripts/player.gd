@@ -1,31 +1,52 @@
 extends CharacterBody3D
 
+## Nodes
+@onready var head = $head
+@onready var cam_head = $head/cam_head
+@onready var cam_bullet = $"../cam_bullet"
+@onready var aimcast = $head/cam_head/aimcast
+@onready var muzzle = $head/gun/muzzle
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+@onready var bullet = preload("res://scenes/bullet.tscn")
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+## Consts
+const MOUSE_SENS = 0.25
+const X_LIMS = [deg_to_rad(-89), deg_to_rad(89)]
 
+## Variables
+## Get the gravity from the project settings to be synced with RigidBody nodes.
+#var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-func _physics_process(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
+func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+func _input(event):
+	# Mouse motion
+	if event is InputEventMouseMotion:
+		var rot_y: float = deg_to_rad(event.relative.x * MOUSE_SENS)
+		var rot_x: float = deg_to_rad(event.relative.y * MOUSE_SENS)
+		
+		rotate_y(-rot_y)
+		head.rotate_x(-rot_x)
+		head.rotation.x = clamp(head.rotation.x, X_LIMS[0], X_LIMS[1])
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-
-	move_and_slide()
+func _process(delta):
+	
+	## Change camera test
+	if Input.is_action_just_pressed("ADS"):
+		if cam_head.is_current():
+			cam_bullet.make_current()
+		else:
+			cam_head.make_current()
+	
+	if Input.is_action_just_pressed("fire"):
+		if aimcast.is_colliding():
+			# Add instance of bullet b to a muzzle node and aim it at the collision point
+			var b = bullet.instantiate()
+			muzzle.add_child(b)
+			b.look_at(aimcast.get_collision_point(), Vector3.UP)
+			b.activate_cam()
+			b.shoot = true
+			print("hit")
+		else:
+			print("missed")
