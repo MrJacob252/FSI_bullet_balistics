@@ -1,0 +1,86 @@
+[gd_scene load_steps=9 format=3 uid="uid://dkv14xjbxc1wk"]
+
+[ext_resource type="Texture2D" uid="uid://bpi3pbwlci0v8" path="res://assets/textures/dev/grids/Dark/texture_07.png" id="1_lfrnt"]
+[ext_resource type="Texture2D" uid="uid://co5p6x0vcqfgj" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="2_03y14"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13jbb"]
+albedo_texture = ExtResource("1_lfrnt")
+uv1_triplanar = true
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_w6nby"]
+panorama = ExtResource("2_03y14")
+
+[sub_resource type="Sky" id="Sky_o535k"]
+sky_material = SubResource("PanoramaSkyMaterial_w6nby")
+
+[sub_resource type="Environment" id="Environment_jiaga"]
+background_mode = 2
+sky = SubResource("Sky_o535k")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="GDScript" id="GDScript_fnehh"]
+script/source = "extends CharacterBody3D
+
+
+const SPEED = 5.0
+const JUMP_VELOCITY = 4.5
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting(\"physics/3d/default_gravity\")
+
+
+func _physics_process(delta):
+	# Add the gravity.
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+
+	# Handle jump.
+	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var input_dir = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if direction:
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+	move_and_slide()
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ucffn"]
+
+[node name="world" type="Node3D"]
+
+[node name="stage" type="Node3D" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+material_override = SubResource("StandardMaterial3D_13jbb")
+size = Vector3(20, 1, 40)
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(0.961204, 0.0308274, 0.274111, -0.194901, 0.779107, 0.595823, -0.195194, -0.626132, 0.754889, 0, 7.80548, 10.307)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_jiaga")
+
+[node name="player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = SubResource("GDScript_fnehh")
+
+[node name="player_standing_collision" type="CollisionShape3D" parent="player"]
+shape = SubResource("CapsuleShape3D_ucffn")
+
+[node name="head" type="Node3D" parent="player"]
+
+[node name="Camera3D" type="Camera3D" parent="player/head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
