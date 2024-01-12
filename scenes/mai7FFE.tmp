@@ -1,0 +1,105 @@
+[gd_scene load_steps=12 format=3 uid="uid://dkv14xjbxc1wk"]
+
+[ext_resource type="Texture2D" uid="uid://bpi3pbwlci0v8" path="res://assets/textures/dev/grids/Dark/texture_07.png" id="1_lfrnt"]
+[ext_resource type="Texture2D" uid="uid://dr2rd581sbkv5" path="res://assets/textures/dev/grids/Orange/texture_05.png" id="2_1krrs"]
+[ext_resource type="Texture2D" uid="uid://co5p6x0vcqfgj" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="2_03y14"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="4_yeym2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13jbb"]
+albedo_texture = ExtResource("1_lfrnt")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vdj1u"]
+albedo_texture = ExtResource("2_1krrs")
+uv1_triplanar = true
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_w6nby"]
+panorama = ExtResource("2_03y14")
+
+[sub_resource type="Sky" id="Sky_o535k"]
+sky_material = SubResource("PanoramaSkyMaterial_w6nby")
+
+[sub_resource type="Environment" id="Environment_jiaga"]
+background_mode = 2
+sky = SubResource("Sky_o535k")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ucffn"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_agh5h"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 1.0
+
+[node name="world" type="Node3D"]
+
+[node name="stage" type="Node3D" parent="."]
+
+[node name="floor" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -15)
+material_override = SubResource("StandardMaterial3D_13jbb")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(20, 1, 40)
+
+[node name="target_tmp" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -34.5)
+material_override = SubResource("StandardMaterial3D_vdj1u")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(2, 2, 1)
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(0.961204, 0.0308274, 0.274111, -0.194901, 0.779107, 0.595823, -0.195194, -0.626132, 0.754889, 0, 7.80548, 10.307)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_jiaga")
+
+[node name="player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("4_yeym2")
+
+[node name="player_standing_collision" type="CollisionShape3D" parent="player"]
+shape = SubResource("CapsuleShape3D_ucffn")
+
+[node name="head" type="Node3D" parent="player"]
+
+[node name="cam_head" type="Camera3D" parent="player/head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="aimcast" type="RayCast3D" parent="player/head/cam_head"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -40, 0)
+
+[node name="ColorRect" type="ColorRect" parent="player/head/cam_head"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.5
+offset_top = -1.5
+offset_right = 1.5
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(1, 0, 0, 1)
+
+[node name="gun" type="MeshInstance3D" parent="player/head"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0.282054, 0.702213, -0.5)
+mesh = SubResource("CylinderMesh_agh5h")
+skeleton = NodePath("../..")
+
+[node name="muzzle" type="Node3D" parent="player/head/gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.65, 0)
+
+[node name="cam_bullet" type="Camera3D" parent="."]
+transform = Transform3D(-2.98023e-08, 0, 1, 0, 1, 0, -1, 0, -2.98023e-08, 3.12109, 1.65946, -1.2113)

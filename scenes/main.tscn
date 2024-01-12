@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dkv14xjbxc1wk"]
+[gd_scene load_steps=16 format=3 uid="uid://dkv14xjbxc1wk"]
 
 [ext_resource type="Texture2D" uid="uid://bpi3pbwlci0v8" path="res://assets/textures/dev/grids/Dark/texture_07.png" id="1_lfrnt"]
 [ext_resource type="Texture2D" uid="uid://dr2rd581sbkv5" path="res://assets/textures/dev/grids/Orange/texture_05.png" id="2_1krrs"]
 [ext_resource type="Texture2D" uid="uid://co5p6x0vcqfgj" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="2_03y14"]
+[ext_resource type="Script" path="res://scripts/bounding_box.gd" id="3_0pxc4"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="4_yeym2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13jbb"]
@@ -12,6 +13,9 @@ uv1_triplanar = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vdj1u"]
 albedo_texture = ExtResource("2_1krrs")
 uv1_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5smnn"]
+size = Vector3(59.637, 1000, 164.467)
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_w6nby"]
 panorama = ExtResource("2_03y14")
@@ -26,23 +30,33 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ucffn"]
+radius = 0.3
+height = 2.25
+
+[sub_resource type="SphereMesh" id="SphereMesh_o5qtb"]
+radius = 0.25
+height = 0.5
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_agh5h"]
 top_radius = 0.1
 bottom_radius = 0.1
-height = 1.0
+height = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_m3f5y"]
+radius = 0.25
+height = 1.75
 
 [node name="world" type="Node3D"]
 
 [node name="stage" type="Node3D" parent="."]
 
 [node name="floor" type="CSGBox3D" parent="stage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, -15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, -67.2833)
 material_override = SubResource("StandardMaterial3D_13jbb")
 use_collision = true
 collision_layer = 3
 collision_mask = 3
-size = Vector3(20, 10, 40)
+size = Vector3(20, 4, 144.567)
 
 [node name="target_tmp" type="CSGBox3D" parent="stage" groups=["Target"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -34.5)
@@ -50,7 +64,33 @@ material_override = SubResource("StandardMaterial3D_vdj1u")
 use_collision = true
 collision_layer = 3
 collision_mask = 3
-size = Vector3(2, 2, 1)
+size = Vector3(2, 2, 5)
+
+[node name="target2_tmp" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(1, 0, 0, 0, 0.797573, -0.603222, 0, 0.603222, 0.797573, 0, 13.9757, -15.9194)
+material_override = SubResource("StandardMaterial3D_vdj1u")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(2, 2, 5)
+
+[node name="bounding_box" type="Area3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 350, 0)
+collision_layer = 8
+collision_mask = 12
+script = ExtResource("3_0pxc4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="stage/bounding_box"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.68158, 106.967, -69.7334)
+shape = SubResource("BoxShape3D_5smnn")
+
+[node name="target_tmp2" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.67757, 4, -126.743)
+material_override = SubResource("StandardMaterial3D_vdj1u")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(2, 2, 5)
 
 [node name="env" type="Node3D" parent="."]
 
@@ -63,9 +103,12 @@ environment = SubResource("Environment_jiaga")
 
 [node name="player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("4_yeym2")
 
 [node name="player_standing_collision" type="CollisionShape3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
 shape = SubResource("CapsuleShape3D_ucffn")
 
 [node name="head" type="Node3D" parent="player"]
@@ -93,13 +136,113 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(1, 0, 0, 1)
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="player/head/cam_head"]
+mesh = SubResource("SphereMesh_o5qtb")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="player/head/cam_head"]
+
+[node name="velocity_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -568.0
+offset_bottom = -488.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.956863, 0, 0.517647, 1)
+text = "test
+test
+test"
+
+[node name="hit_target_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "test"
+
+[node name="wind_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = 23.0
+offset_bottom = 80.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "test
+test"
+
+[node name="follow_cam_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "test"
+
+[node name="gravity_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
+offset_top = 23.0
+offset_right = 40.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "test"
+
+[node name="bullet_impulse_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
+offset_top = 46.0
+offset_right = 40.0
+offset_bottom = 69.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "test"
+
+[node name="engine_speed_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
+offset_top = 69.0
+offset_right = 40.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(0.541176, 0.180392, 0, 1)
+text = "test"
+
 [node name="gun" type="MeshInstance3D" parent="player/head"]
-transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0.282054, 0.702213, -0.5)
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0.282054, 0.702213, -0.311003)
 mesh = SubResource("CylinderMesh_agh5h")
 skeleton = NodePath("../..")
 
 [node name="muzzle" type="Node3D" parent="player/head/gun"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.65, 0)
 
+[node name="cam_ads" type="Camera3D" parent="player/head/gun"]
+transform = Transform3D(-4.37114e-08, 1, 0, 4.37114e-08, 3.55271e-15, 1, 1, 4.37114e-08, -4.37114e-08, 0.14, 0, 0)
+
+[node name="ColorRect" type="ColorRect" parent="player/head/gun/cam_ads"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.5
+offset_top = -1.5
+offset_right = 1.5
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(1, 0, 0, 1)
+
+[node name="body" type="MeshInstance3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0)
+visibility_range_begin = 2.0
+mesh = SubResource("CapsuleMesh_m3f5y")
+
 [node name="cam_bullet" type="Camera3D" parent="."]
-transform = Transform3D(-2.98023e-08, 0, 1, 0, 1, 0, -1, 0, -2.98023e-08, 3.12109, 1.65946, -1.2113)
+transform = Transform3D(0.780463, 0, 0.625202, 0, 1, 0, -0.625202, 0, 0.780463, 21.5049, 20.7432, -1.39608)
+
+[node name="audio_player" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[connection signal="area_exited" from="stage/bounding_box" to="stage/bounding_box" method="_on_area_exited"]
+[connection signal="body_exited" from="stage/bounding_box" to="stage/bounding_box" method="_on_body_exited"]

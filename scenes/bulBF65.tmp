@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2be6blfg3wdv"]
+
+[ext_resource type="Script" path="res://scripts/bullet2.gd" id="1_rifss"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rjuub"]
+radius = 0.05
+height = 0.15
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_l02mo"]
+radius = 0.05
+height = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ejytg"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="bullet" type="Area3D"]
+collision_layer = 0
+script = ExtResource("1_rifss")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_rjuub")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_l02mo")
+surface_material_override/0 = SubResource("StandardMaterial3D_ejytg")
+
+[node name="bullet_cam" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.079008, 0.256344)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
