@@ -15,7 +15,7 @@ albedo_texture = ExtResource("2_1krrs")
 uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5smnn"]
-size = Vector3(59.637, 1000, 164.467)
+size = Vector3(279.383, 988.712, 422.471)
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_w6nby"]
 panorama = ExtResource("2_03y14")
@@ -51,23 +51,55 @@ height = 1.75
 [node name="stage" type="Node3D" parent="."]
 
 [node name="floor" type="CSGBox3D" parent="stage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, -67.2833)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, -105)
 material_override = SubResource("StandardMaterial3D_13jbb")
 use_collision = true
 collision_layer = 3
 collision_mask = 3
-size = Vector3(20, 4, 144.567)
+size = Vector3(20, 4, 220)
 
-[node name="target_tmp" type="CSGBox3D" parent="stage" groups=["Target"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -34.5)
+[node name="target_50m" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2, -52.5)
 material_override = SubResource("StandardMaterial3D_vdj1u")
 use_collision = true
 collision_layer = 3
 collision_mask = 3
 size = Vector3(2, 2, 5)
 
-[node name="target2_tmp" type="CSGBox3D" parent="stage" groups=["Target"]]
-transform = Transform3D(1, 0, 0, 0, 0.797573, -0.603222, 0, 0.603222, 0.797573, 0, 13.9757, -15.9194)
+[node name="target_100m" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4, -102.5)
+material_override = SubResource("StandardMaterial3D_vdj1u")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(2, 2, 5)
+
+[node name="target_200m" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -202.5)
+material_override = SubResource("StandardMaterial3D_vdj1u")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(2, 2, 5)
+
+[node name="target_angled_50m" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(0.984808, -0.0481552, -0.166837, 0, 0.960779, -0.277315, 0.173648, 0.273102, 0.946182, 6, 20, -50)
+material_override = SubResource("StandardMaterial3D_vdj1u")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(2, 2, 5)
+
+[node name="target_angled_100m" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(1, 0, 0, 0, 0.984807, -0.173648, 0, 0.173648, 0.984807, 0, 50, -200)
+material_override = SubResource("StandardMaterial3D_vdj1u")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(2, 2, 5)
+
+[node name="target_angled_200m" type="CSGBox3D" parent="stage" groups=["Target"]]
+transform = Transform3D(0.996195, 0.0305226, 0.0816363, 0, 0.936672, -0.350207, -0.0871557, 0.348875, 0.933108, -6, 35, -100)
 material_override = SubResource("StandardMaterial3D_vdj1u")
 use_collision = true
 collision_layer = 3
@@ -81,16 +113,8 @@ collision_mask = 12
 script = ExtResource("3_0pxc4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="stage/bounding_box"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.68158, 106.967, -69.7334)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.9673, 112.611, -138.807)
 shape = SubResource("BoxShape3D_5smnn")
-
-[node name="target_tmp2" type="CSGBox3D" parent="stage" groups=["Target"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.67757, 4, -126.743)
-material_override = SubResource("StandardMaterial3D_vdj1u")
-use_collision = true
-collision_layer = 3
-collision_mask = 3
-size = Vector3(2, 2, 5)
 
 [node name="env" type="Node3D" parent="."]
 
