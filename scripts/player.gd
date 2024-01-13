@@ -13,6 +13,7 @@ extends CharacterBody3D
 @onready var gravity_label = $head/cam_head/CanvasLayer/gravity_label
 @onready var bullet_impulse_label = $head/cam_head/CanvasLayer/bullet_impulse_label
 @onready var engine_speed_label = $head/cam_head/CanvasLayer/engine_speed_label
+@onready var engine_physics_tic_label = $head/cam_head/CanvasLayer/engine_physics_tic_label
 @onready var audio_player = $"../audio_player"
 
 #@onready var bullet = preload("res://scenes/bullet.tscn")
@@ -35,9 +36,10 @@ var velocity_label_format: String = "Velocity X: %.4f\nVelocity Y: %.4f\nVelocit
 var hit_target_label_format: String = "Target hit: %s"
 var wind_label_format: String = "Wind speed: %.2f m/s\nWind direction: %s"
 var bullet_follow_format: String = "Follow bullet: %s"
-var bullet_impulse_format: String = "Bullet muzzle speed: %.2f m/s"
+var bullet_impulse_format: String = "Bullet muzzle velocity: %.2f m/s"
 var gravity_format: String = "Gravity strength: %.2f m/s^2"
-var engine_speed_format: String = "Engine speed: %.0f%%"
+var engine_speed_format: String = "Engine time scale: %.0f%%"
+var engine_tic_format: String = "Engine physics tic rate: %.1f Hz"
 
 var ctrl_mod: int = 1
 
@@ -46,7 +48,8 @@ var follow_cam: bool = true
 #var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
-	#Engine.physics_ticks_per_second = 180
+	Global.set_engine()
+	Global.set_engine_scale()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	head = player_head
 	init_hud()
@@ -81,6 +84,7 @@ func _process(delta):
 				b.activate_cam()
 			b.fire(player_head.global_rotation)
 			b.connect("target_hit", update_target_label_signal)
+			b.bullet_player.volume_db = 0.0
 			b.bullet_player.stream = shot_sound
 			b.bullet_player.play()
 			print("hit")
@@ -118,12 +122,17 @@ func _process(delta):
 	if Input.is_action_just_pressed("engine_up"):
 		var tmp: float = Engine.time_scale + 0.1
 		if tmp <= 1:
+			Global.engine_scale = tmp
 			Engine.time_scale = tmp
 	if Input.is_action_just_pressed("engine_down"):
 		var tmp: float = Engine.time_scale - 0.1
 		if tmp >= 0.1:
+			Global.engine_scale = tmp
 			Engine.time_scale = tmp
 	
+	if Input.is_action_just_pressed("quit_to_menu"):
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	## Not inputs
 	if is_instance_valid(b):
@@ -133,6 +142,7 @@ func _process(delta):
 	update_gravity_label()
 	update_bullet_impulse_label()
 	update_engine_speed_label()
+	update_physics_tic_label()
 
 
 func update_velocity_label(new_velocity):
@@ -179,7 +189,10 @@ func update_engine_speed_label():
 	var engine_time = Engine.time_scale * 100
 	engine_speed_label.text = engine_speed_format % engine_time
 	engine_speed_label.show()
-	
+
+func update_physics_tic_label():
+	engine_physics_tic_label.text = engine_tic_format % Engine.physics_ticks_per_second
+	engine_physics_tic_label.show()
 	
 func init_hud():
 	update_target_label(false)
@@ -189,5 +202,7 @@ func init_hud():
 	update_gravity_label()
 	update_bullet_impulse_label()
 	update_engine_speed_label()
+	update_physics_tic_label()
+	
 
 

@@ -54,7 +54,7 @@ columns = 5
 
 [node name="muzzle_speed_title" type="Label" parent="Options"]
 layout_mode = 2
-text = "Muzzle Velocity [m/s]"
+text = "Muzzle Speed [m/s]"
 
 [node name="gravity_title" type="Label" parent="Options"]
 layout_mode = 2
