@@ -147,71 +147,100 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -568.0
-offset_bottom = -488.0
+offset_left = -269.0
+offset_top = -580.0
+offset_right = -13.0
+offset_bottom = -500.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.956863, 0, 0.517647, 1)
-text = "test
-test
-test"
+theme_override_colors/font_color = Color(0.639216, 0, 0.341176, 1)
+text = "velocity x
+velocity y
+velocity z"
+horizontal_alignment = 2
 
 [node name="hit_target_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 23.0
-grow_horizontal = 0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -576.0
+offset_right = 577.0
+offset_bottom = 45.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
-text = "test"
+theme_override_font_sizes/font_size = 32
+text = "hit target"
+horizontal_alignment = 1
+
+[node name="bullet_valid_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 307.0
+offset_top = 34.0
+offset_right = 563.0
+offset_bottom = 68.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "bullet valid"
+horizontal_alignment = 2
 
 [node name="wind_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -40.0
+offset_left = -1130.0
 offset_top = 23.0
+offset_right = -958.0
 offset_bottom = 80.0
 grow_horizontal = 0
-theme_override_colors/font_color = Color(0, 1, 0, 1)
-text = "test
-test"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "wind speed
+wind direction"
 
 [node name="follow_cam_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-offset_right = 40.0
-offset_bottom = 23.0
-theme_override_colors/font_color = Color(0, 1, 0, 1)
-text = "test"
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 307.0
+offset_right = 563.0
+offset_bottom = 34.0
+grow_horizontal = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "follow cam"
+horizontal_alignment = 2
 
 [node name="gravity_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-offset_top = 23.0
-offset_right = 40.0
-offset_bottom = 46.0
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-text = "test"
+offset_left = 22.0
+offset_top = 73.0
+offset_right = 151.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "gravity"
 
 [node name="bullet_impulse_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-offset_top = 46.0
-offset_right = 40.0
-offset_bottom = 69.0
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-text = "test"
+offset_left = 22.0
+offset_right = 194.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "muzzle velocity"
 
 [node name="engine_speed_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-offset_top = 69.0
-offset_right = 40.0
-offset_bottom = 92.0
+offset_left = 22.0
+offset_top = 123.0
+offset_right = 194.0
+offset_bottom = 146.0
 theme_override_colors/font_color = Color(0.541176, 0.180392, 0, 1)
-text = "test"
+text = "engine speed"
 
 [node name="engine_physics_tic_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-offset_top = 92.0
-offset_right = 40.0
-offset_bottom = 115.0
+offset_left = 22.0
+offset_top = 100.0
+offset_right = 194.0
+offset_bottom = 123.0
 theme_override_colors/font_color = Color(0.541176, 0.180392, 0, 1)
-text = "test"
+text = "engine tic rate"
 
 [node name="gun" type="MeshInstance3D" parent="player/head"]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0.282054, 0.702213, -0.311003)

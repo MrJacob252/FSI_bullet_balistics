@@ -15,6 +15,7 @@ extends CharacterBody3D
 @onready var engine_speed_label = $head/cam_head/CanvasLayer/engine_speed_label
 @onready var engine_physics_tic_label = $head/cam_head/CanvasLayer/engine_physics_tic_label
 @onready var audio_player = $"../audio_player"
+@onready var bullet_valid_label = $head/cam_head/CanvasLayer/bullet_valid_label
 
 #@onready var bullet = preload("res://scenes/bullet.tscn")
 #@onready var bullet = preload("res://scenes/bullet2.tscn")
@@ -40,6 +41,7 @@ var bullet_impulse_format: String = "Bullet muzzle velocity: %.2f m/s"
 var gravity_format: String = "Gravity strength: %.2f m/s^2"
 var engine_speed_format: String = "Engine time scale: %.0f%%"
 var engine_tic_format: String = "Engine physics tic rate: %.1f Hz"
+var bullet_valid_format: String ="Bullet instance is valid: %s"
 
 var ctrl_mod: int = 1
 
@@ -65,7 +67,6 @@ func _input(event):
 		head.rotation.x = clamp(head.rotation.x, X_LIMS[0], X_LIMS[1])
 
 func _process(delta):
-	
 	## Input processing
 	if Input.is_action_just_pressed("ADS"):
 		if cam_head.is_current():
@@ -87,9 +88,10 @@ func _process(delta):
 			b.bullet_player.volume_db = 0.0
 			b.bullet_player.stream = shot_sound
 			b.bullet_player.play()
-			print("hit")
+			#print("hit")
 		else:
-			print("bullet valid:", is_instance_valid(b))
+			#print("bullet valid:", is_instance_valid(b))
+			pass
 	
 	if Input.is_action_just_pressed("follow_cam_switch"):
 		follow_cam_switch()
@@ -143,6 +145,7 @@ func _process(delta):
 	update_bullet_impulse_label()
 	update_engine_speed_label()
 	update_physics_tic_label()
+	update_bullet_valid_label()
 
 
 func update_velocity_label(new_velocity):
@@ -194,6 +197,10 @@ func update_physics_tic_label():
 	engine_physics_tic_label.text = engine_tic_format % Engine.physics_ticks_per_second
 	engine_physics_tic_label.show()
 	
+func update_bullet_valid_label():
+	bullet_valid_label.text = bullet_valid_format % str(is_instance_valid(b))
+	bullet_valid_label.show()
+	
 func init_hud():
 	update_target_label(false)
 	update_wind_label()
@@ -203,6 +210,7 @@ func init_hud():
 	update_bullet_impulse_label()
 	update_engine_speed_label()
 	update_physics_tic_label()
+	update_bullet_valid_label()
 	
 
 

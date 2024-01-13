@@ -52,7 +52,7 @@ func _on_area_3d_body_entered(body):
 	else:
 		queue_free()
 		
-	print("bullet colided with:", body)
+	#print("bullet colided with:", body)
 		
 func activate_cam():
 	bullet_cam.make_current()
