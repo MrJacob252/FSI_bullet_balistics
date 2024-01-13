@@ -1,24 +1,30 @@
 extends Node
 
-var gravity_cnst: float = 9.8
-var wind_speed: float = 1.0
-#var initial_velocity: float = 100.5
-var initial_velocity: float = 335.0
-var engine_scale: float = 0.5
+## Default settings variables
+var def_muzzle_speed: float = 335.0
+var def_gravity: float = 9.8
+var def_wind: float = 1.0
+var def_engine_speed: float = 0.5
 
-var def_muzzle_speed: float = initial_velocity
-var def_gravity: float = gravity_cnst
-var def_wind: float = wind_speed
-var def_engine_speed: float = engine_scale
+## Global variables for setting up stuff
+var gravity_cnst: float = def_gravity
+var wind_speed: float = def_wind
+var initial_velocity: float = def_muzzle_speed
+var engine_scale: float = def_engine_speed
 
+## First time loading the software
 var initial_load: bool = true
+
 
 func _ready():
 	set_engine()
 
+
 func set_engine():
+	## Set engine variables
 	Engine.physics_ticks_per_second = 480
 	#Engine.time_scale = engine_scale
+
 
 func set_engine_scale():
 	Engine.time_scale = engine_scale
