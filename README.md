@@ -1,8 +1,19 @@
 # FSI_bullet_balistics
+
 Project for Dynamic Simulations class to simulate bullet trajectory
 
+# Running the project
+
+Because of the requirements to not submit any binaries I did not include any here. To run the final project do this:
+
+- Download [Godot](https://godotengine.org/) from official website (version 4.2 or higher)
+- Load project.godot in the project folder
+- In a right hand corner press the "Play project" button or F5
+  - Project should be settup to run from main menu scene but if that's not the case press Ctrl + Shift + F5 and select main_menu.tscn
+  - To stop running the project when mouse is captured use F8 (or Alt + Tab and press the stop button in Editor)
 
 # Controls
+
 - ### Aiming and Shooting 
   - Mouse movement to aim
   - **LMB**: Fire projectile
