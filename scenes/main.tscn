@@ -166,17 +166,14 @@ mesh = SubResource("SphereMesh_o5qtb")
 [node name="CanvasLayer" type="CanvasLayer" parent="player/head/cam_head"]
 
 [node name="velocity_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-anchors_preset = 3
+anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
 offset_left = -269.0
-offset_top = -580.0
+offset_top = 45.0
 offset_right = -13.0
-offset_bottom = -500.0
+offset_bottom = 125.0
 grow_horizontal = 0
-grow_vertical = 0
 theme_override_colors/font_color = Color(0.639216, 0, 0.341176, 1)
 text = "velocity x
 velocity y
@@ -197,39 +194,35 @@ text = "hit target"
 horizontal_alignment = 1
 
 [node name="bullet_valid_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 307.0
-offset_top = 34.0
-offset_right = 563.0
-offset_bottom = 68.0
-grow_horizontal = 2
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -269.0
+offset_right = -13.0
+offset_bottom = 34.0
+grow_horizontal = 0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 text = "bullet valid"
 horizontal_alignment = 2
 
 [node name="wind_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -1130.0
+offset_left = 22.0
 offset_top = 23.0
-offset_right = -958.0
+offset_right = 194.0
 offset_bottom = 80.0
-grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "wind speed
 wind direction"
 
 [node name="follow_cam_label" type="Label" parent="player/head/cam_head/CanvasLayer"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 307.0
-offset_right = 563.0
-offset_bottom = 34.0
-grow_horizontal = 2
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -269.0
+offset_top = 23.0
+offset_right = -13.0
+offset_bottom = 57.0
+grow_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 text = "follow cam"
