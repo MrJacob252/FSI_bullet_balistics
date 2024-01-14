@@ -12,8 +12,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_eo0wa")
 
-[node name="MenuBg" type="Sprite2D" parent="."]
-position = Vector2(576, 324)
+[node name="MenuBg" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.52588e-05
+offset_right = 768.0
+offset_bottom = 432.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_6h4wg")
 
