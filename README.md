@@ -2,6 +2,30 @@
 
 Project for Dynamic Simulations class to simulate bullet trajectory
 
+# Acknowledgement of weak sides
+
+Because this was my firs time working with Godot or any sort of game engine I got stuck quite often and it took me quite a while to figure how to do the a projectile motion that wasn't completely broken and worked all the time not only in some edge cases.
+
+This means the calculation of the bullet motion was quite simplified in the end. Wind was consideted only as pushing in X axis of the global coordinate system.
+
+Force of the wind was calculated as a preassure created by the wind onto a flat crossection multiplied by [drag coefficient](https://en.wikipedia.org/wiki/Drag_coefficient) of a sphere.
+
+$$F = A \times P \times C_d$$
+
+$$P = 0.5 \times \rho \times v^2$$
+
+The final velocity applied onto the the bullet was calculated from this force *F*.
+
+$$a = F / m$$
+
+$$m = V \times \rho$$
+
+$$v = a \times m$$
+
+Where bullets' density was considered as being 11340 kg/m<sup>3</sup> which is a density of Lead.
+
+This could 100% be imporoved but it workes as a proof of concept. If the wind speed is set to 20 000 m/s (which is 58 times the speed of sound) the bullet visibly turn. Which is nice.
+
 # Running the project
 
 Because of the requirements to not submit any binaries I did not include any here. To run the final project do this:
