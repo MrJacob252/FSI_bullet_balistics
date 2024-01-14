@@ -1,7 +1,7 @@
 extends Node
 
 ## Default settings variables
-var def_muzzle_speed: float = 335.0
+var def_muzzle_speed: float = 360.0
 var def_gravity: float = 9.8
 var def_wind: float = 1.0
 var def_engine_speed: float = 0.5
